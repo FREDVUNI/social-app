@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\fredv\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js init
+  C:\Program Files\nodejs\node.exe C:\Users\fredv\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js start
 
 PATH: 
   C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\xampp\php;C:\Users\fredv\AppData\Local\Microsoft\WindowsApps;C:\Users\fredv\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\fredv\AppData\Roaming\npm;C:\xampp\php;
@@ -14,20 +14,28 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: canceled
-      at Interface.<anonymous> (C:\Users\fredv\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:137150:13)
-      at Interface.emit (node:events:513:28)
-      at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1130:18)
-      at ReadStream.onkeypress (node:internal/readline/interface:270:20)
-      at ReadStream.emit (node:events:513:28)
-      at emitKeys (node:internal/readline/utils:357:14)
-      at emitKeys.next (<anonymous>)
-      at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
-      at ReadStream.emit (node:events:513:28)
-      at addChunk (node:internal/streams/readable:324:12)
+  SyntaxError: C:\Users\fredv\OneDrive\Desktop\mern\social\api\package.json: Unexpected token } in JSON at position 219
+      at JSON.parse (<anonymous>)
+      at C:\Users\fredv\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\fredv\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\fredv\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
 
 npm manifest: 
   {
+    "name": "social-api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "description": "",
+    "type":"module",
+    "scripts": {
+      "start": "nodemon index,js",
+      "test": "echo \"Error: no test specified\" && exit 1",
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    
     "dependencies": {
       "cors": "^2.8.5",
       "dotenv": "^16.0.3",
@@ -35,7 +43,8 @@ npm manifest:
       "jsonwebtoken": "^9.0.0",
       "morgan": "^1.10.0",
       "mysql": "^2.18.1"
-    }
+    },
+    "devDependencies": {}
   }
 
 yarn manifest: 
