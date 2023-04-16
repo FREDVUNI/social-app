@@ -18,7 +18,7 @@ export const register = async (req, res) => {
       const values = [req.body.username, req.body.email, hash, req.body.name];
 
       const q =
-        "INSERT INTO users(`username`,`email`,`password`,`name`) VALUE(?)";
+        "INSERT INTO users(`username`,`email`,`password`,`name`) VALUES(?)";
       db.query(q, [values], (err, data) => {
         if (err) return res.status.json(err);
         return res.status(200).json("user has been created.");

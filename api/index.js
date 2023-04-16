@@ -7,23 +7,32 @@ import { connectDB } from "./database/db.js";
 import AuthRoutes from "./routes/auth.js";
 // import CommentsRoutes from "./routes/comments.js";
 // import LikesRoutes from "./routes/likes.js";
-// import PostsRoutes from "./routes/posts.js";
+import PostsRoutes from "./routes/posts.js";
 // import UsersRoutes from "./routes/users.js";
 const app = express();
 
+//middleware
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Credentials", true);
+// });
+
 app.use(morgan("tiny"));
 dotenv.config({ path: ".env" });
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/auth", AuthRoutes);
-// app.use("api/users", UsersRoutes);
-// app.use("api/posts", PostsRoutes);
-// app.use("api/comments", CommentsRoutes);
-// app.use("api/likes", LikesRoutes);
+// app.use("/api/users", UsersRoutes);
+app.use("/api/posts", PostsRoutes);
+// app.use("/api/comments", CommentsRoutes);
+// app.use("/api/likes", LikesRoutes);
 
 const PORT = process.env.PORT || 9000;
 
