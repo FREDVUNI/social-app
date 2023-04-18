@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./database/db.js";
+import uploadSingleFile from "./controllers/upload.js";
 import AuthRoutes from "./routes/auth.js";
 // import CommentsRoutes from "./routes/comments.js";
 // import LikesRoutes from "./routes/likes.js";
@@ -33,6 +34,7 @@ app.use("/api/auth", AuthRoutes);
 app.use("/api/posts", PostsRoutes);
 // app.use("/api/comments", CommentsRoutes);
 // app.use("/api/likes", LikesRoutes);
+app.post("/api/upload", uploadSingleFile);
 
 const PORT = process.env.PORT || 9000;
 

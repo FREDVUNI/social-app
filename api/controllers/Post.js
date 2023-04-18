@@ -1,4 +1,5 @@
 import { db } from "../database/connection.js";
+import uploadSingleFile from "./upload.js";
 import jwt from "jsonwebtoken";
 import moment from "moment/moment.js";
 
@@ -13,7 +14,7 @@ export const getPosts = async (req, res) => {
 
       const q = `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
       LEFT JOIN relationships As r ON(p.userId = r.followed_userId) WHERE r.follower_userId = ? OR p.userId 
-      ORDER BY p.createdAt DESC`; 
+      ORDER BY p.createdAt DESC`;
 
       db.query(q, [userInfo.id, userInfo.id], (err, data) => {
         if (err) return res.status(500).json(err);
@@ -30,17 +31,24 @@ export const addPost = async (req, res) => {
     if (!token) return res.status(401).json("You're not authorized. - login");
 
     jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
-      if (err) res.status(403).json("You're not authorized. - invalid cookie");
+      if (err)
+        return res.status(403).json("You're not authorized. - invalid cookie");
+
+      uploadSingleFile(req, res, (err) => {
+        if (err) {
+          return res.status(500).json("Failed to upload image");
+        }
+      });
 
       const q =
-        "INSERT INTO posts(`details`,`image`,`createdAt`,`userId`) VALUES(?)";
+        "INSERT INTO posts(`details`,`image`,`createdAt`,`userId`) VALUES(?, ?, ?, ?)";
       const values = [
         req.body.details,
-        req.body.image,
+        req.file ? req.file.filename : null,
         moment(Date.now()).format("YYY-MM-DD HH:mm:ss"),
         userInfo.id,
       ];
-      db.query(q, [values], (err, data) => {
+      db.query(q, values, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.status(200).json("Post has been created.");
       });
