@@ -1,9 +1,20 @@
 import { db } from "../database/connection.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Joi from "joi";
 
 export const register = async (req, res) => {
   try {
+    const schema = Joi.object({
+        username:Joi.string().required().min(4),
+        password:Joi.string().required().min(6),
+        email:Joi.string().required().email(),
+        name:Joi.string().alphanum().required().min(4)
+    })
+
+    const { error } = schema.validate(req.body)
+    if(error) return res.status(400).json(error.details[0].message)
+
     const q = "SELECT * FROM users WHERE username = ? OR email = ?";
     db.query(q, [req.body.username, req.body.email], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -30,6 +41,14 @@ export const register = async (req, res) => {
 };
 export const login = async (req, res) => {
   try {
+    const schema = Joi.object({
+      username:Joi.string().required().min(4),
+      password:Joi.string().required().min(6),
+  })
+
+  const { error } = schema.validate(req.body)
+  if(error) return res.status(400).json(error.details[0].message)
+
     const q = "SELECT * FROM users WHERE username = ? OR email = ?";
     db.query(q, [req.body.username, req.body.email], async (err, data) => {
       if (err) return res.status(500).json(err);

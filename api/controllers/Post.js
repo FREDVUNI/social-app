@@ -1,3 +1,4 @@
+import Joi from "joi";
 import { db } from "../database/connection.js";
 import uploadSingleFile from "./upload.js";
 import jwt from "jsonwebtoken";
@@ -27,6 +28,14 @@ export const getPosts = async (req, res) => {
 };
 export const addPost = async (req, res) => {
   try {
+    const schema = Joi.object({
+      details: Joi.string().required().min(4),
+      image: Joi.string().required(),
+    });
+
+    const { error } = schema.validate(req.body);
+    if (error) return res.status(400).json(error.details[0].message);
+
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized. - login");
 
@@ -40,15 +49,17 @@ export const addPost = async (req, res) => {
         }
       });
 
-      const q =
-        "INSERT INTO posts(`details`,`image`,`createdAt`,`userId`) VALUES(?, ?, ?, ?)";
       const values = [
+        userInfo.id,
         req.body.details,
         req.file ? req.file.filename : null,
         moment(Date.now()).format("YYY-MM-DD HH:mm:ss"),
-        userInfo.id,
       ];
-      db.query(q, values, (err, data) => {
+
+      const q =
+        "INSERT INTO posts(`userId`,`details`,`image`,`createdAt`) VALUES(?)";
+
+      db.query(q, [values], (err, data) => {
         if (err) return res.status(500).json(err);
         return res.status(200).json("Post has been created.");
       });
