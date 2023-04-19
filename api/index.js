@@ -1,4 +1,5 @@
 import express from "express";
+const app = express();
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -9,12 +10,40 @@ import AuthRoutes from "./routes/auth.js";
 // import LikesRoutes from "./routes/likes.js";
 import PostsRoutes from "./routes/posts.js";
 // import UsersRoutes from "./routes/users.js";
-const app = express();
+import multer from "multer";
+import path from "path";
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //middleware
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Credentials", true);
 // });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({ storage, fileFilter });
+
+app.use("/api/upload", upload.single("file"), (req, res) => {
+  const file = req.file;
+  res.status(200).json(file.filename);
+});
 
 app.use(morgan("tiny"));
 dotenv.config({ path: ".env" });
@@ -23,11 +52,8 @@ dotenv.config({ path: ".env" });
 //     origin: "http://localhost:3000",
 //   })
 // );
+app.use(cors());
 app.use(cookieParser());
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 
 app.use("/api/auth", AuthRoutes);
 // app.use("/api/users", UsersRoutes);

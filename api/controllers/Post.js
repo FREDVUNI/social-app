@@ -7,11 +7,10 @@ import moment from "moment/moment.js";
 export const getPosts = async (req, res) => {
   try {
     const token = req.cookies.accessToken;
-    if (!token) return res.status(401).json("You're not authorized. - login");
+    if (!token) return res.status(401).json("You're not authorized.");
 
     jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
-      if (err)
-        return res.status(403).json("You're not authorized. - invalid cookie");
+      if (err) return res.status(403).json("You're not authorized.");
 
       const q = `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
       LEFT JOIN relationships As r ON(p.userId = r.followed_userId) WHERE r.follower_userId = ? OR p.userId 
@@ -37,22 +36,17 @@ export const addPost = async (req, res) => {
     if (error) return res.status(400).json(error.details[0].message);
 
     const token = req.cookies.accessToken;
-    if (!token) return res.status(401).json("You're not authorized. - login");
+    if (!token) return res.status(401).json("You're not authorized.");
 
     jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
-      if (err)
-        return res.status(403).json("You're not authorized. - invalid cookie");
+      if (err) return res.status(403).json("You're not authorized.");
 
-      uploadSingleFile(req, res, (err) => {
-        if (err) {
-          return res.status(500).json("Failed to upload image");
-        }
-      });
+      uploadSingleFile(req, res);
 
       const values = [
         userInfo.id,
         req.body.details,
-        req.file ? req.file.filename : null,
+        req.file,
         moment(Date.now()).format("YYY-MM-DD HH:mm:ss"),
       ];
 

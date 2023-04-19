@@ -4,9 +4,9 @@ This is a social media app developed using full-stack JavaScript technologies, i
 
 ## Features
 
-### User Registration and Authentication
+### User Registration, login and Authentication
 
-Users can create an account with a unique username and password.
+Users can create an account with a unique username and password and can signin there after.
 
 ### User Profiles
 
@@ -32,7 +32,7 @@ React, sass
 
 ### Backend
 
-Node.js, Express, JWT for token-based authentication
+Node.js, Express, Joi for validatiions, JWT for token-based authentication (cookies)
 
 ### Database
 
@@ -55,8 +55,8 @@ Render for backend, Netlify for frontend Installation
 - Start the MySQL server and create the necessary database tables as per the schema provided.
 - Start the backend server by running yarn start in the backend directory.
 - Start the frontend development server by running yarn start in the frontend directory.
-- Access the app in your web browser at <http://localhost:3000>.
+- Access the app in your web browser at <http://localhost:8800>.
 
 ### Fork the repository
 
-Create a new branch for your feature or bug fix. Make changes and commit them with descriptive commit messages. Push your changes to your forked repository. Create a pull request to the main repository and provide a detailed description of your changes. Regenerate response
+Create a new branch for your feature or bug fix. Make changes and commit them with descriptive commit messages. Push your changes to your forked repository. Create a pull request to the main repository and provide a detailed description of your changes.
