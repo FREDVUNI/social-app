@@ -45,6 +45,14 @@ app.use("/api/upload", upload.single("file"), (req, res) => {
   res.status(200).json(file.filename);
 });
 
+export const uploadSingleFile = () => {
+  upload.single("image"),
+    (req, res) => {
+      const file = req.file;
+      res.status(200).json(file.filename);
+    };
+};
+
 app.use(morgan("tiny"));
 dotenv.config({ path: ".env" });
 // app.use(

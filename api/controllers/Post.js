@@ -1,8 +1,10 @@
 import Joi from "joi";
 import { db } from "../database/connection.js";
-import uploadSingleFile from "./upload.js";
+import { uploadSingleFile } from "../index.js";
 import jwt from "jsonwebtoken";
 import moment from "moment/moment.js";
+import multer from "multer";
+import path from "path";
 
 export const getPosts = async (req, res) => {
   try {
@@ -28,8 +30,12 @@ export const getPosts = async (req, res) => {
 export const addPost = async (req, res) => {
   try {
     const schema = Joi.object({
-      details: Joi.string().required().min(4),
-      image: Joi.string().required(),
+      details: Joi.string().min(4).required(),
+      image: Joi.object({
+        data: Joi.binary().encoding("base64").required(),
+        contentType: Joi.string().required(),
+        name: Joi.string().required(),
+      }).required(),
     });
 
     const { error } = schema.validate(req.body);
@@ -38,30 +44,54 @@ export const addPost = async (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized.");
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, userInfo) => {
       if (err) return res.status(403).json("You're not authorized.");
 
-      uploadSingleFile(req, res);
+      const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, "uploads/");
+        },
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + path.extname(file.originalname));
+        },
+      });
 
-      const values = [
-        userInfo.id,
-        req.body.details,
-        req.file,
-        moment(Date.now()).format("YYY-MM-DD HH:mm:ss"),
-      ];
+      const fileFilter = (req, file, cb) => {
+        if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+          cb(null, true);
+        } else {
+          cb(null, false);
+        }
+      };
 
-      const q =
-        "INSERT INTO posts(`userId`,`details`,`image`,`createdAt`) VALUES(?)";
+      const upload = multer({
+        storage: storage,
+        fileFilter: fileFilter,
+      }).single("image");
 
-      db.query(q, [values], (err, data) => {
+      upload(req, res, async (err) => {
         if (err) return res.status(500).json(err);
-        return res.status(200).json("Post has been created.");
+
+        const values = [
+          userInfo.id,
+          req.body.details,
+          req.file.filename,
+          moment(Date.now()).format("YYY-MM-DD HH:mm:ss"),
+        ];
+
+        const q =
+          "INSERT INTO posts(`userId`,`details`,`image`,`createdAt`) VALUES(?)";
+        db.query(q, [values], (err, data) => {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json("Post has been created.");
+        });
       });
     });
   } catch (error) {
     res.status(500).json(error.message);
   }
 };
+
 // export const logout = async () => {
 //   try {
 //   } catch (error) {

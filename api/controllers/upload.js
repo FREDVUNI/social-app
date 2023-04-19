@@ -20,12 +20,13 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter });
 
-const uploadSingleFile = () => {
-  upload.single("file"),
-    (req, res) => {
-      const file = req.file;
-      res.status(200).json(file.filename);
-    };
+const uploadSingleFile = (req, res, next) => {
+  upload.single("image")(req, res, function (err) {
+    if (err) {
+      return res.status(500).json(err);
+    }
+    next();
+  });
 };
 
 export default uploadSingleFile;
