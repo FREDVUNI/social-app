@@ -1,10 +1,9 @@
 import Joi from "joi";
 import { db } from "../database/connection.js";
-import { uploadSingleFile } from "../index.js";
 import jwt from "jsonwebtoken";
 import moment from "moment/moment.js";
 import multer from "multer";
-import path from "path";
+import { storage, fileFilter } from "../index.js";
 
 export const getPosts = async (req, res) => {
   try {
@@ -47,23 +46,6 @@ export const addPost = async (req, res) => {
     jwt.verify(token, process.env.JWT_SECRET, async (err, userInfo) => {
       if (err) return res.status(403).json("You're not authorized.");
 
-      const storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-          cb(null, "uploads/");
-        },
-        filename: (req, file, cb) => {
-          cb(null, Date.now() + path.extname(file.originalname));
-        },
-      });
-
-      const fileFilter = (req, file, cb) => {
-        if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-          cb(null, true);
-        } else {
-          cb(null, false);
-        }
-      };
-
       const upload = multer({
         storage: storage,
         fileFilter: fileFilter,
@@ -76,7 +58,7 @@ export const addPost = async (req, res) => {
           userInfo.id,
           req.body.details,
           req.file.filename,
-          moment(Date.now()).format("YYY-MM-DD HH:mm:ss"),
+          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
         ];
 
         const q =
@@ -91,10 +73,3 @@ export const addPost = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
-
-// export const logout = async () => {
-//   try {
-//   } catch (error) {
-//     res.status(500).json(error.message);
-//   }
-// };

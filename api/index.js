@@ -1,17 +1,17 @@
 import express from "express";
 const app = express();
+import multer from "multer";
+import path from "path";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./database/db.js";
 import AuthRoutes from "./routes/auth.js";
-// import CommentsRoutes from "./routes/comments.js";
+import CommentsRoutes from "./routes/comments.js";
 // import LikesRoutes from "./routes/likes.js";
 import PostsRoutes from "./routes/posts.js";
 // import UsersRoutes from "./routes/users.js";
-import multer from "multer";
-import path from "path";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,16 +21,16 @@ app.use(express.urlencoded({ extended: true }));
 //   res.header("Access-Control-Allow-Credentials", true);
 // });
 
-const storage = multer.diskStorage({
+export const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads");
+    cb(null, "../client/public/uploads/posts");
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-const fileFilter = (req, file, cb) => {
+export const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
   } else {
@@ -55,18 +55,17 @@ export const uploadSingleFile = () => {
 
 app.use(morgan("tiny"));
 dotenv.config({ path: ".env" });
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//   })
-// );
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 app.use(cookieParser());
 
 app.use("/api/auth", AuthRoutes);
 // app.use("/api/users", UsersRoutes);
 app.use("/api/posts", PostsRoutes);
-// app.use("/api/comments", CommentsRoutes);
+app.use("/api/comments", CommentsRoutes);
 // app.use("/api/likes", LikesRoutes);
 
 const PORT = process.env.PORT || 9000;
