@@ -11,7 +11,7 @@ import AuthRoutes from "./routes/auth.js";
 import CommentsRoutes from "./routes/comments.js";
 import LikesRoutes from "./routes/likes.js";
 import PostsRoutes from "./routes/posts.js";
-// import UsersRoutes from "./routes/users.js";
+import UsersRoutes from "./routes/users.js";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -63,7 +63,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/auth", AuthRoutes);
-// app.use("/api/users", UsersRoutes);
+app.use("/api/users", UsersRoutes);
 app.use("/api/posts", PostsRoutes);
 app.use("/api/comments", CommentsRoutes);
 app.use("/api/likes", LikesRoutes);
