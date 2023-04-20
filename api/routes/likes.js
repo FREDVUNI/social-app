@@ -1,7 +1,10 @@
-// import express from "express";
+import express from "express";
+import { addLike, deleteLike, getLikes } from "../controllers/Like.js";
 
-// const router = express.Router()
+const router = express.Router();
 
-// router.get()
+router.get("/", getLikes);
+router.post("/", addLike);
+router.delete("/", deleteLike);
 
-// export default router
+export default router;
