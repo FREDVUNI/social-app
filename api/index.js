@@ -15,7 +15,7 @@ import UsersRoutes from "./routes/users.js";
 import RelationshipsRoutes from "./routes/relationships.js";
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 //middleware
 // app.use((req, res, next) => {
