@@ -12,6 +12,7 @@ import CommentsRoutes from "./routes/comments.js";
 import LikesRoutes from "./routes/likes.js";
 import PostsRoutes from "./routes/posts.js";
 import UsersRoutes from "./routes/users.js";
+import RelationshipsRoutes from "./routes/relationships.js";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -67,6 +68,7 @@ app.use("/api/users", UsersRoutes);
 app.use("/api/posts", PostsRoutes);
 app.use("/api/comments", CommentsRoutes);
 app.use("/api/likes", LikesRoutes);
+app.use("/api/relationships", RelationshipsRoutes);
 
 const PORT = process.env.PORT || 9000;
 

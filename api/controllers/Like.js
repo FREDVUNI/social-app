@@ -1,4 +1,3 @@
-import Joi from "joi";
 import { db } from "../database/connection.js";
 import jwt from "jsonwebtoken";
 import moment from "moment";

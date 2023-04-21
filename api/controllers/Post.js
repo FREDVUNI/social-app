@@ -13,11 +13,13 @@ export const getPosts = async (req, res) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
       if (err) return res.status(403).json("You're not authorized.");
 
-      const q = `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
+      const q = `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON (u.id = p.userId)
+      WHERE p.userId = ?
+       ? SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
       LEFT JOIN relationships As r ON(p.userId = r.followed_userId) WHERE r.follower_userId = ? OR p.userId 
       ORDER BY p.createdAt DESC`;
 
-      db.query(q, [userInfo.id, userInfo.id], (err, data) => {
+      db.query(q, [userId ? userId : userInfo.id, userInfo.id], (err, data) => {
         if (err) return res.status(500).json(err);
         return res.status(200).json(data);
       });
