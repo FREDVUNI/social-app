@@ -1,3 +1,4 @@
+import Joi from "joi";
 import { db } from "../database/connection.js";
 import jwt from "jsonwebtoken";
 
@@ -23,6 +24,25 @@ export const getUser = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
+    const schema = Joi.object({
+      name: Joi.string().min(4).required(),
+      username: Joi.string().min(4).required(),
+      city: Joi.string().required(),
+      coverImage: Joi.object({
+        data: Joi.binary().encoding("base64"),
+        contentType: Joi.string(),
+        name: Joi.string(),
+      }),
+      profileImage: Joi.object({
+        data: Joi.binary().encoding("base64"),
+        contentType: Joi.string(),
+        name: Joi.string(),
+      }),
+    });
+
+    const { error } = schema.validate(req.body);
+    if (error) return res.status(400).json(error.details[0].message);
+
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized.");
 
