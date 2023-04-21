@@ -91,7 +91,7 @@ export const deletePost = (req, res) => {
 
       const q = "DELETE FROM posts WHERE `id` = ? AND `userId` = ?";
 
-      db.query(q, [req.query.id, userInfo.id], (err, data) => {
+      db.query(q, [req.params.id, userInfo.id], (err, data) => {
         if (err) return res.status(500).json(err);
 
         if (data.affectedRows > 0)
