@@ -10,7 +10,7 @@ export const getRelationships = async (req, res) => {
       if (err) return res.status(500).json(err);
       return res
         .status(200)
-        .json(data.map(relationship => relationship.follower_userId));
+        .json(data.map((relationship) => relationship.follower_userId));
     });
   } catch (error) {
     res.status(500).json(error.message);

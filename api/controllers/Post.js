@@ -13,16 +13,22 @@ export const getPosts = async (req, res) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
       if (err) return res.status(403).json("You're not authorized.");
 
-      const q = `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON (u.id = p.userId)
-      WHERE p.userId = ?
-       ? SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
+      const q =
+        userId !== "undefined"
+          ? `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON (u.id = p.userId)
+      WHERE p.userId = ?`
+          : `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
       LEFT JOIN relationships As r ON(p.userId = r.followed_userId) WHERE r.follower_userId = ? OR p.userId 
       ORDER BY p.createdAt DESC`;
 
-      db.query(q, [userId ? userId : userInfo.id, userInfo.id], (err, data) => {
-        if (err) return res.status(500).json(err);
-        return res.status(200).json(data);
-      });
+      db.query(
+        q,
+        userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id],
+        (err, data) => {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json(data);
+        }
+      );
     });
   } catch (error) {
     res.status(500).json(error.message);
@@ -69,6 +75,29 @@ export const addPost = async (req, res) => {
           if (err) return res.status(500).json(err);
           return res.status(200).json("Post has been created.");
         });
+      });
+    });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+export const deletePost = (req, res) => {
+  try {
+    const token = req.cookies.accessToken;
+    if (!token) return res.status(401).json("You're not authorized.");
+
+    jwt.verify(token, process.env.JWT_SECRET, async (err, userInfo) => {
+      if (err) return res.status(403).json("You're not authorized.");
+
+      const q = "DELETE FROM posts WHERE `id` = ? AND `userId` = ?";
+
+      db.query(q, [req.query.id, userInfo.id], (err, data) => {
+        if (err) return res.status(500).json(err);
+
+        if (data.affectedRows > 0)
+          return res.status(200).json("Post has been deleted.");
+
+        return res.status(403).json("You can only delete your posts.");
       });
     });
   } catch (error) {
