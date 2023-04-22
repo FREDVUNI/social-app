@@ -68,7 +68,7 @@ export const updateComment = async (req, res) => {
       const q =
         "UPDATE comments SET `userId` = ?,`postId` = ?,`details` = ? WHERE `id` = ?";
 
-      values = [userInfo.id, req.body.postId, req.body.details, req.query.id];
+      values = [userInfo.id, req.body.postId, req.body.details, req.params.id];
 
       db.query(q, [values], (err, data) => {
         if (err) return res.status(500).json(err);
