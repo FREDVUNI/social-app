@@ -133,7 +133,7 @@ export const updatePost = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
-export const deletePost = (req, res) => {
+export const deletePost = async (req, res) => {
   try {
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized.");
