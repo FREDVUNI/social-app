@@ -123,7 +123,7 @@ export const updatePost = async (req, res) => {
           if (data.affectedRows > 0)
             return res.status(200).json("profile has been updated.");
 
-          return res.status(403).json("You can only update your comments.");
+          return res.status(403).json("You can only update your posts.");
         });
       });
     });
