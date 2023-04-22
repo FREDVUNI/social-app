@@ -109,14 +109,15 @@ export const updatePost = async (req, res) => {
       upload(req, res, async (err) => {
         if (err) return res.status(500).json(err);
 
+        const q =
+          "UPDATE posts SET `userId` = ?,`details` = ?,`image` = ? WHERE `id` = ?";
+
         const values = [
           userInfo.id,
           req.body.details,
           req.file.filename,
           // moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
         ];
-        const q =
-          "UPDATE posts SET `userId` = ?,`details` = ?,`image` = ? WHERE `id` = ?";
 
         db.query(q, [values], (err, data) => {
           if (err) return res.status(500).json(err);
