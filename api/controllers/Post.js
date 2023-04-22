@@ -116,6 +116,7 @@ export const updatePost = async (req, res) => {
           userInfo.id,
           req.body.details,
           req.file.filename,
+          req.params.id,
           // moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
         ];
 
