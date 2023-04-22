@@ -50,7 +50,7 @@ export const updateProfile = async (req, res) => {
       if (err) return res.status(403).json("You're not authorized.");
 
       const q =
-        "UPDATE USER SET `name` = ?,`username` = ?,`city` = ?,`coverImage` = ?,`profileImage` = ? WHERE `id` = ?";
+        "UPDATE users SET `name` = ?,`username` = ?,`city` = ?,`coverImage` = ?,`profileImage` = ? WHERE `id` = ?";
 
       const values = [
         req.body.name,
@@ -64,7 +64,7 @@ export const updateProfile = async (req, res) => {
       db.query(q, [values], (err, data) => {
         if (err) return res.status(500).json(err);
         if (data.affectedRows > 0)
-          return res.status(200) / json("profile has been updated.");
+          return res.status(200).json("profile has been updated.");
       });
     });
   } catch (error) {
