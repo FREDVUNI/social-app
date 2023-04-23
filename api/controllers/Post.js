@@ -123,7 +123,7 @@ export const updatePost = async (req, res) => {
         db.query(q, [values], (err, data) => {
           if (err) return res.status(500).json(err);
           if (data.affectedRows > 0)
-            return res.status(200).json("profile has been updated.");
+            return res.status(200).json("post has been updated.");
 
           return res.status(403).json("You can only update your posts.");
         });
