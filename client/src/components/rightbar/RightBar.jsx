@@ -35,7 +35,9 @@ const RightBar = () => {
             <div className="userInfo">
               <img src={Person} alt="person" />
               <p>
-                <span>Jane Doe</span> Changed their profile picture
+                <span>Jane Doe</span>
+                <br/>
+                Changed their profile picture 
               </p>
             </div>
             <span>1 min ago</span>
@@ -44,7 +46,9 @@ const RightBar = () => {
             <div className="userInfo">
               <img src={Person} alt="person" />
               <p>
-                <span>Jane Doe</span> Changed their profile picture
+                <span>Jane Doe</span> 
+                <br/>
+                Changed their profile picture
               </p>
             </div>
             <span>1 min ago</span>
