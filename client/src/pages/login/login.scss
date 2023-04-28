@@ -1,103 +1,103 @@
-.register {
-    height: 100vh;
-    //   background-color: rgb(193, 190, 255);
+.login {
+  height: 100vh;
+  //   background-color: rgb(193, 190, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .card {
+    width: 50%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    .card {
-      width: 50%;
+    background-color: #fff;
+    min-height: 400px;
+    width: 800px;
+    overflow: hidden;
+    .left {
+      flex: 1;
+      background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
+        url("../../images/login.jpg") center;
+      background-size: cover;
+      padding: 50px;
       display: flex;
-      background-color: #fff;
-      min-height: 400px;
-      width: 800px;
-      overflow: hidden;
-      .left {
-        flex: 1;
-        background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
-          url("../../images/login.jpg") center;
-        background-size: cover;
-        padding: 50px;
+      flex-direction: column;
+      gap: 30px;
+      color: #fff;
+      box-shadow: drop-shadow(-4px -4px 44px rgba(0, 0, 0, 0.08));
+      h1 {
+        font-size: 100px;
+        line-height: 100px;
+      }
+      p {
+        font-size: 20px;
+      }
+      span {
+        font-size: 16px;
+      }
+      button {
+        color: rebeccapurple;
+        display: inline-block;
+        font-weight: 400;
+        background-color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #fff;
+        padding: 0.375rem 0.75rem;
+        font-size: 1.4rem;
+        line-height: 1.5;
+        cursor: pointer;
+        border-radius: 0.1rem;
+        width: 100%;
+      }
+    }
+    .right {
+      flex: 1;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      justify-content: center;
+
+      h1 {
+        color: #555;
+      }
+      form {
         display: flex;
         flex-direction: column;
         gap: 30px;
-        color: #fff;
-        box-shadow: drop-shadow(-4px -4px 44px rgba(0, 0, 0, 0.08));
-        h1 {
-          font-size: 100px;
-          line-height: 100px;
+      }
+      input {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        flex: 1;
+        border: 1px solid #ced4da;
+        font-size: 18px;
+
+        &-box-shadow {
+          filter: drop-shadow(-4px -4px 44px rgba(0, 0, 0, 0.08));
         }
-        p {
-          font-size: 18px;
-        }
-        span {
-          font-size: 16px;
-        }
-        button {
-          color: rebeccapurple;
-          display: inline-block;
-          font-weight: 400;
-          background-color: #fff;
-          text-align: center;
-          vertical-align: middle;
-          border: 1px solid #fff;
-          padding: 0.375rem 0.75rem;
-          font-size: 1.4rem;
-          line-height: 1.5;
-          cursor: pointer;
-          border-radius: 0.1rem;
+
+        &:focus {
+          border: 1px solid #ced4da;
         }
       }
-      .right {
-        flex: 1;
-        padding: 50px;
-        display: flex;
-        flex-direction: column;
-        gap: 50px;
-        justify-content: center;
-  
-        h1 {
-          color: #555;
-        }
-        form {
-          display: flex;
-          flex-direction: column;
-          gap: 30px;
-        }
-        input {
-          display: block;
-          width: 100%;
-          padding: 0.375rem 0.75rem;
-          font-weight: 400;
-          line-height: 1.5;
-          color: #495057;
-          background-color: #fff;
-          background-clip: padding-box;
-          flex: 1;
-          border: 1px solid #ced4da;
-          font-size: 18px;
-  
-          &-box-shadow {
-            filter: drop-shadow(-4px -4px 44px rgba(0, 0, 0, 0.08));
-          }
-  
-          &:focus {
-            border: 1px solid #ced4da;
-          }
-        }
-        button {
-          color: #fff;
-          display: inline-block;
-          font-weight: 400;
-          background-color: #938eef;
-          text-align: center;
-          vertical-align: middle;
-          border: 1px solid #938eef;
-          padding: 0.375rem 0.75rem;
-          font-size: 1.4rem;
-          line-height: 1.5;
-          cursor: pointer;
-        }
+      button {
+        color: #fff;
+        display: inline-block;
+        font-weight: 400;
+        background-color: #938eef;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #938eef;
+        padding: 0.375rem 0.75rem;
+        font-size: 1.4rem;
+        line-height: 1.5;
+        cursor: pointer;
       }
     }
   }
-  
+}
