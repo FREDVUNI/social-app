@@ -45,7 +45,7 @@ const LeftBar = () => {
             <span>Memories</span>
           </div>
         </div>
-        <hr/>
+        <hr />
         <div className="menu">
           <span>Your short cuts</span>
           <div className="item">
@@ -69,7 +69,7 @@ const LeftBar = () => {
             <span>Messages</span>
           </div>
         </div>
-        <hr/>
+        <hr />
         <div className="menu">
           <span>Others</span>
           <div className="item">
