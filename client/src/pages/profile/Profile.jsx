@@ -23,19 +23,19 @@ const Profile = () => {
         <div className="uInfo">
           <div className="left">
             <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
+              <FacebookTwoToneIcon fontSize="small" />
             </a>
             <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
+              <InstagramIcon fontSize="small" />
             </a>
             <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
+              <TwitterIcon fontSize="small" />
             </a>
             <a href="http://facebook.com">
-              <LinkedInIcon fontSize="large" />
+              <LinkedInIcon fontSize="small" />
             </a>
             <a href="http://facebook.com">
-              <PinterestIcon fontSize="large" />
+              <PinterestIcon fontSize="small" />
             </a>
           </div>
           <div className="center">
@@ -47,7 +47,7 @@ const Profile = () => {
               </div>
               <div className="item">
                 <LanguageIcon />
-                <span>lama.dev</span>
+                <span>https://www.lama.dev</span>
               </div>
             </div>
             <button>follow</button>
