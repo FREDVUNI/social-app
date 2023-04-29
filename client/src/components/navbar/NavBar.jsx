@@ -9,11 +9,12 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import { Link } from "react-router-dom";
-import Person from "../../images/person.png";
 import { ToggleContext } from "../../context/ToggleTheme";
+import { AuthContext } from "../../context/Auth";
 
 const NavBar = () => {
   const { toggler, darkMode } = useContext(ToggleContext);
+  const { currentUser } = useContext(AuthContext);
   return (
     <div className="navbar">
       <div className="left">
@@ -36,8 +37,8 @@ const NavBar = () => {
         <EmailOutlinedIcon className="pointer" />
         <NotificationsOutlinedIcon className="pointer" />
         <div className="user">
-          <img src={Person} alt="person" />
-          <span>John Doe</span>
+          <img src={currentUser.profileImage} alt="person" />
+          <span>{currentUser.username}</span>
         </div>
       </div>
     </div>

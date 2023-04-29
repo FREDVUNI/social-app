@@ -11,7 +11,6 @@ import { useState } from "react";
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
 
-  //TEMPORARY
   const liked = false;
 
   return (

@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./login.scss";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/Auth";
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login();
+  };
+
   return (
     <div className="login boxShadow">
       <div className="card">
@@ -19,7 +27,7 @@ const Login = () => {
         </div>
         <div className="right">
           <h1>Login</h1>
-          <form action="">
+          <form onSubmit={handleLogin}>
             <input
               type="text"
               name="username"
@@ -32,7 +40,7 @@ const Login = () => {
               className="boxShadow"
               placeholder="Enter password"
             />
-            <button>Login</button>
+            <button type="submit">Login</button>
           </form>
         </div>
       </div>
