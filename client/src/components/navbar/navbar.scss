@@ -37,6 +37,10 @@
           width: 500px;
           background-color: transparent;
           color: themed("textColor");
+
+          @include mobile {
+            display: none;
+          }
         }
       }
     }
