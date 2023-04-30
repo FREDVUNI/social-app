@@ -1,27 +1,31 @@
 import { createContext, useEffect, useState } from "react";
-import Person from "../images/person.png";
+import axios from "axios";
 
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
-  const login = () => {
-    setCurrentUser({
-      id: 1,
-      name: "Fred",
-      username: "Fred",
-      email: "fredvuni809@gmail.com",
-      password: "password",
-      profileImage: Person,
-    });
+
+  const register = (inputs) => {
+    axios.post(`${process.env.BASE_URL}/auth/register`, inputs);
+
+    setCurrentUser({ inputs });
+  };
+
+  const login = (inputs) => {
+    axios.post(`${process.env.BASE_URL}/auth/login`, inputs);
+
+    setCurrentUser({ inputs });
   };
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser, login }}>
+    <AuthContext.Provider
+      value={{ currentUser, setCurrentUser, login, register }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -28,7 +28,7 @@ To get started with this app, follow these steps:
 1. Clone the repository to your local machine using `git clone <https://github.com/FREDVUNI/social-app.git>`
 2. Install the required dependencies by running `yarn install`
 3. Set up the database by running the SQL script located in `./database/social.sql`
-4. Update the database configuration file located in `./config/database.js` with your MySQL credentials from the .env file
+4. Update the database configuration file located in `./config/database.js` with your MySQL credentials from the .env file and set up .env.local client **base url** REACT_APP_BASE_URL=<http://localhost:8800/api>
 5. Start the server by running `yarn start`
 6. Access the app in your web browser at `http://localhost:8800`
 
