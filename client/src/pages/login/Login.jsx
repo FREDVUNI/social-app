@@ -9,7 +9,7 @@ const Login = () => {
     username: "",
     password: "",
   });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -18,9 +18,9 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(inputs);
-    } catch (error) {
-      setError(error.response.data);
-      console.log(error.response.data);
+    } catch (err) {
+      setError(err.response.data);
+      console.log(error);
     }
   };
 
@@ -40,6 +40,7 @@ const Login = () => {
         </div>
         <div className="right">
           <h1>Login</h1>
+          {error && error}
           <form onSubmit={handleLogin}>
             <input
               type="text"

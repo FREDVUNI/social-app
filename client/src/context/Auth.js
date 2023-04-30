@@ -8,15 +8,19 @@ export const AuthProvider = ({ children }) => {
   );
 
   const register = (inputs) => {
-    axios.post(`${process.env.BASE_URL}/auth/signup`, inputs);
-
-    setCurrentUser({ inputs });
+    axios.post(`${process.env.REACT_APP_BASE_URL}/auth/signup`, inputs);
   };
 
   const login = (inputs) => {
-    axios.post(`${process.env.BASE_URL}/auth/signin`, inputs);
+    const res = axios.post(
+      `${process.env.REACT_APP_BASE_URL}/auth/signin`,
+      inputs,
+      {
+        withCredentials: true,
+      }
+    );
 
-    setCurrentUser({ inputs });
+    setCurrentUser(res.data);
   };
 
   useEffect(() => {

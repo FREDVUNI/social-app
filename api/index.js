@@ -17,10 +17,10 @@ import RelationshipsRoutes from "./routes/relationships.js";
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-//middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Credentials", true);
-});
+// //middleware
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Credentials", true);
+// });
 
 export const storage = multer.diskStorage({
   destination: (req, file, cb) => {
