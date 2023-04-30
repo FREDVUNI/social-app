@@ -30,6 +30,7 @@ const NavBar = () => {
         <GridViewOutlinedIcon className="pointer" />
         <div className="search">
           <input type="text" name="search" placeholder="Search ..." />
+          <SearchOutlinedIcon className="pointer"/>
         </div>
       </div>
       <div className="right">
