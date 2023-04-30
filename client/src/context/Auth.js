@@ -8,13 +8,13 @@ export const AuthProvider = ({ children }) => {
   );
 
   const register = (inputs) => {
-    axios.post(`${process.env.BASE_URL}/auth/register`, inputs);
+    axios.post(`${process.env.BASE_URL}/auth/signup`, inputs);
 
     setCurrentUser({ inputs });
   };
 
   const login = (inputs) => {
-    axios.post(`${process.env.BASE_URL}/auth/login`, inputs);
+    axios.post(`${process.env.BASE_URL}/auth/signin`, inputs);
 
     setCurrentUser({ inputs });
   };
