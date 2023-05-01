@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import "./register.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/Auth";
 
 const Register = () => {
   const { register } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [inputs, setInputs] = useState({
     username: "",
@@ -21,6 +22,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await register(inputs);
+      navigate("/login");
     } catch (err) {
       setError(err.response.data);
       // console.log(err);
@@ -42,7 +44,7 @@ const Register = () => {
         </div>
         <div className="right">
           <h1>Register</h1>
-          {error && error}
+          <span className="text-error">{error && error}</span>
           <form onSubmit={handleRegister}>
             <input
               type="text"

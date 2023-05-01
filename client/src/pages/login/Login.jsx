@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import "./login.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/Auth";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -18,9 +20,10 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(inputs);
+      navigate("/");
     } catch (err) {
       setError(err.response.data);
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -40,7 +43,7 @@ const Login = () => {
         </div>
         <div className="right">
           <h1>Login</h1>
-          {error && error}
+          <span className="text-error">{error && error}</span>
           <form onSubmit={handleLogin}>
             <input
               type="text"

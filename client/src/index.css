@@ -10,3 +10,6 @@ body {
 a {
   text-decoration: none;
 }
+.text-error{
+  color: #f0544f;
+}

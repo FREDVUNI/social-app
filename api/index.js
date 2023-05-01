@@ -18,9 +18,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // //middleware
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Credentials", true);
-// });
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+
+  next();
+});
 
 export const storage = multer.diskStorage({
   destination: (req, file, cb) => {

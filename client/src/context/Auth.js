@@ -4,15 +4,17 @@ import axios from "axios";
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
+    JSON.parse(localStorage.getItem("user")) !== null
+      ? JSON.parse(localStorage.getItem("user"))
+      : null
   );
 
-  const register = (inputs) => {
-    axios.post(`${process.env.REACT_APP_BASE_URL}/auth/signup`, inputs);
+  const register = async (inputs) => {
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/signup`, inputs);
   };
 
-  const login = (inputs) => {
-    const res = axios.post(
+  const login = async (inputs) => {
+    const res = await axios.post(
       `${process.env.REACT_APP_BASE_URL}/auth/signin`,
       inputs,
       {
