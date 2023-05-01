@@ -43,7 +43,7 @@ const Post = ({ post }) => {
           {post.image ? (
             <img src={"/uploads/posts/" + post.image} alt="" />
           ) : (
-            <img src={NoImage} alt="No image available" />
+            <img src={NoImage} alt="noimage" />
           )}
         </div>
         <div className="info">
