@@ -3,7 +3,8 @@ import Image from "../../assets/img.png";
 import Map from "../../assets/map.png";
 import Friend from "../../assets/friend.png";
 import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/Auth";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 
 const Share = () => {
   const { currentUser } = useContext(AuthContext);
@@ -11,7 +12,11 @@ const Share = () => {
     <div className="share">
       <div className="container">
         <div className="top">
-          <img src={currentUser.profilePic} alt="" />
+          {currentUser.profileImage ? (
+            <img src={currentUser.profileImage} alt="person" />
+          ) : (
+            <AccountBoxOutlinedIcon className="pointer" />
+          )}
           <input
             type="text"
             placeholder={`What's on your mind ${currentUser.name}?`}
