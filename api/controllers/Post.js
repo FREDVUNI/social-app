@@ -13,17 +13,16 @@ export const getPosts = async (req, res) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
       if (err) return res.status(403).json("You're not authorized.");
 
-      const q =
-        userId !== "undefined"
-          ? `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON (u.id = p.userId)
-      WHERE p.userId = ?`
-          : `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
-      LEFT JOIN relationships As r ON(p.userId = r.followed_userId) WHERE r.follower_userId = ? OR p.userId 
-      ORDER BY p.createdAt DESC`;
+      const userId = req.query.userId;
+      const q = userId
+        ? `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON (u.id = p.userId)
+      WHERE p.userId = ? ORDER BY p.createdAt DESC`
+        : `SELECT p.*,u.id As userId,name,profileImage FROM posts AS p JOIN users As u ON(u.id=p.userId)
+      LEFT JOIN relationships As r ON(p.userId = r.followed_userId) WHERE r.follower_userId = ? OR p.userId ORDER BY p.createdAt DESC`;
 
       db.query(
         q,
-        userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id],
+        userId ? [userId] : [userInfo.id, userInfo.id],
         (err, data) => {
           if (err) return res.status(500).json(err);
           return res.status(200).json(data);
@@ -34,19 +33,20 @@ export const getPosts = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
+
 export const addPost = async (req, res) => {
   try {
-    const schema = Joi.object({
-      details: Joi.string().min(4).required(),
-      image: Joi.object({
-        data: Joi.binary().encoding("base64").required(),
-        contentType: Joi.string().required(),
-        name: Joi.string().required(),
-      }).required(),
-    });
+    // const schema = Joi.object({
+    //   details: Joi.string().min(4).required(),
+    //   image: Joi.object({
+    //     data: Joi.binary().encoding("base64").required(),
+    //     contentType: Joi.string().required(),
+    //     name: Joi.string().required(),
+    //   }).required(),
+    // });
 
-    const { error } = schema.validate(req.body);
-    if (error) return res.status(400).json(error.details[0].message);
+    // const { error } = schema.validate(req.body);
+    // if (error) return res.status(400).json(error.details[0].message);
 
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized.");

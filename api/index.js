@@ -24,6 +24,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 export const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "../client/public/uploads/posts");
@@ -43,7 +49,7 @@ export const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter });
 
-app.use("/api/upload", upload.single("file"), (req, res) => {
+app.post("/api/upload", upload.single("file"), (req, res) => {
   const file = req.file;
   res.status(200).json(file.filename);
 });
@@ -58,11 +64,7 @@ export const uploadSingleFile = () => {
 
 app.use(morgan("tiny"));
 dotenv.config({ path: ".env" });
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+
 app.use(cookieParser());
 
 app.use("/api/auth", AuthRoutes);

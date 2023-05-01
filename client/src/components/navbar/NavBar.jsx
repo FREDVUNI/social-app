@@ -43,7 +43,7 @@ const NavBar = () => {
           {currentUser.profileImage ? (
             <img src={currentUser.profileImage} alt="person" />
           ) : (
-            <AccountBoxOutlinedIcon className="pointer"/>
+            <AccountBoxOutlinedIcon className="pointer" />
           )}
           <span>{currentUser.username}</span>
         </div>
