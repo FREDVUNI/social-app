@@ -28,12 +28,12 @@ const Posts = () => {
   //   },
   // ];
   let userId = currentUser.id;
-  const { isLoading, error, data } = useQuery(["posts"], () => {
-    return makeRequest.get("/posts?userId=" + userId).then((res) => {
-      return res.data;
-    });
+  const { isLoading, error, data } = useQuery(["posts"], async () => {
+    const response = await makeRequest.get("/posts?userId=" + userId);
+    return response.data;
   });
-  console.log(data);
+
+  // console.log(data);
 
   return (
     <div className="posts">

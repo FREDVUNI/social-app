@@ -32,37 +32,47 @@ const Share = () => {
     },
     {
       onSuccess: () => {
+        // invalidate and refetch
         queryClient.invalidateQueries(["posts"]);
       },
     }
   );
 
-  // const handleChange = (e) => {
-  //   setDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  // };
-
   const handleClick = async (e) => {
     e.preventDefault();
     let imgURL = "";
     if (file) imgURL = await upload();
-
     mutation.mutate({ details, image: imgURL });
+    setDetails("");
+    setFile(null);
   };
 
   return (
     <div className="share">
       <div className="container">
         <div className="top">
-          {currentUser.profileImage ? (
-            <img src={currentUser.profileImage} alt="person" />
-          ) : (
-            <AccountBoxOutlinedIcon className="pointer" />
-          )}
-          <input
-            type="text"
-            placeholder={`What's on your mind ${currentUser.name}?`}
-            onChange={(e) => setDetails(e.target.value)}
-          />
+          <div className="left">
+            {currentUser.profileImage ? (
+              <img src={currentUser.profileImage} alt="person" />
+            ) : (
+              <AccountBoxOutlinedIcon className="pointer" />
+            )}
+            <input
+              type="text"
+              placeholder={`What's on your mind ${currentUser.name}?`}
+              onChange={(e) => setDetails(e.target.value)}
+              value={details}
+            />
+          </div>
+          <div className="right">
+            {file && (
+              <img
+                src={URL.createObjectURL(file)}
+                alt="preview"
+                className="file"
+              />
+            )}
+          </div>
         </div>
         <hr />
         <div className="bottom">
@@ -73,6 +83,7 @@ const Share = () => {
               name="file"
               style={{ display: "none" }}
               onChange={(e) => setFile(e.target.files[0])}
+              fde
             />
             <label htmlFor="file">
               <div className="item">
@@ -90,7 +101,9 @@ const Share = () => {
             </div>
           </div>
           <div className="right">
-            <button onClick={handleClick}>Share</button>
+            <button type="submit" onClick={handleClick}>
+              Share
+            </button>
           </div>
         </div>
       </div>

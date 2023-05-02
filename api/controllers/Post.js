@@ -34,47 +34,26 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const addPost = async (req, res) => {
+export const addPost = (req, res) => {
   try {
-    // const schema = Joi.object({
-    //   details: Joi.string().min(4).required(),
-    //   image: Joi.object({
-    //     data: Joi.binary().encoding("base64").required(),
-    //     contentType: Joi.string().required(),
-    //     name: Joi.string().required(),
-    //   }).required(),
-    // });
-
-    // const { error } = schema.validate(req.body);
-    // if (error) return res.status(400).json(error.details[0].message);
-
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized.");
 
     jwt.verify(token, process.env.JWT_SECRET, async (err, userInfo) => {
       if (err) return res.status(403).json("You're not authorized.");
 
-      const upload = multer({
-        storage: storage,
-        fileFilter: fileFilter,
-      }).single("image");
+      const q =
+        "INSERT INTO posts(`details`, `image`, `createdAt`, `userId`) VALUES (?)";
+      const values = [
+        req.body.details,
+        req.body.image,
+        moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        userInfo.id,
+      ];
 
-      upload(req, res, async (err) => {
+      db.query(q, [values], (err, data) => {
         if (err) return res.status(500).json(err);
-
-        const values = [
-          userInfo.id,
-          req.body.details,
-          req.file.filename,
-          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-        ];
-
-        const q =
-          "INSERT INTO posts(`userId`,`details`,`image`,`createdAt`) VALUES(?)";
-        db.query(q, [values], (err, data) => {
-          if (err) return res.status(500).json(err);
-          return res.status(200).json("Post has been created.");
-        });
+        return res.status(200).json("Post has been created.");
       });
     });
   } catch (error) {
