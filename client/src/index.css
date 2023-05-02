@@ -10,6 +10,12 @@ body {
 a {
   text-decoration: none;
 }
-.text-error{
+.text-error {
   color: #f0544f;
+}
+.text-loading {
+  color: limegreen;
+}
+.pointer {
+  cursor: pointer;
 }

@@ -28,17 +28,19 @@ const Posts = () => {
   //   },
   // ];
   let userId = currentUser.id;
-  const { isLoading, error, data } = useQuery(["posts"], async () => {
-    const res = await makeRequest.get("/posts");
-    return res.data;
+  const { isLoading, error, data } = useQuery(["posts"], () => {
+    return makeRequest.get("/posts?userId=" + userId).then((res) => {
+      return res.data;
+    });
   });
+  console.log(data);
 
   return (
     <div className="posts">
       {error ? (
         <span className="text-error">There was an error loading posts.</span>
       ) : isLoading ? (
-        "Loading..."
+        <span className="text-loading">Loading ...</span>
       ) : (
         data.map((post) => <Post post={post} key={post.id} />)
       )}

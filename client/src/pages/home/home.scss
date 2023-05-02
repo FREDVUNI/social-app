@@ -4,6 +4,17 @@
   @include themify($themes) {
     padding: 20px 30px;
     background-color: themed("bgSoft");
+    flex: 2;
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow: scroll;
+    color: themed("textColor");
+    z-index: 1; /* Set z-index to 1 */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     @include mobile {
       padding: 10px;

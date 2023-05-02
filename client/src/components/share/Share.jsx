@@ -27,8 +27,8 @@ const Share = () => {
   };
 
   const mutation = useMutation(
-    (formData) => {
-      return makeRequest.post("/posts", formData);
+    (newPost) => {
+      return makeRequest.post("/posts", newPost);
     },
     {
       onSuccess: () => {
@@ -46,11 +46,7 @@ const Share = () => {
     let imgURL = "";
     if (file) imgURL = await upload();
 
-    const formData = new FormData();
-    formData.append("details", details);
-    formData.append("image", imgURL);
-
-    mutation.mutate(formData);
+    mutation.mutate({ details, image: imgURL });
   };
 
   return (

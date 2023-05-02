@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 // //middleware
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
-
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   next();
 });
 
