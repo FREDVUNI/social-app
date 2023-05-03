@@ -17,6 +17,8 @@ import { useLocation } from "react-router-dom";
 import { makeRequest } from "../../axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Update from "../../components/update/Update";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import NoImage from "../../images/Noimage.jpg";
 
 const Profile = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -31,23 +33,35 @@ const Profile = () => {
   );
   // console.log(data);
 
+  const { isLoading: rshipLoading, data: relationshipData } = useQuery(
+    ["relationship"],
+    async () => {
+      const response = await makeRequest.get(
+        "/relationships?followed_userId=" + userId
+      );
+      return response.data;
+    }
+  );
+  // console.log(relationshipData);
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
-    (liked) => {
-      if (liked) return makeRequest.delete("/relationships?userId=" + userId);
+    (following) => {
+      if (following)
+        return makeRequest.delete("/relationships?userId=" + userId);
       return makeRequest.post("/relationships", { userId });
     },
     {
       onSuccess: () => {
         // invalidate and refetch
-        queryClient.invalidateQueries(["user"]);
+        queryClient.invalidateQueries(["relationship"]);
       },
     }
   );
   const handleFollow = (e) => {
     e.preventDefault();
-    mutation.mutate(data.includes(currentUser.id));
+    mutation.mutate(relationshipData.includes(currentUser.id));
   };
   return (
     <div className="profile">
@@ -58,8 +72,24 @@ const Profile = () => {
       ) : (
         <>
           <div className="images">
-            <img src={Cover} alt="" className="cover" />
-            <img src={Person} alt="" className="profilePic" />
+            {currentUser.coverImage ? (
+              <img
+                src={currentUser.coverImage}
+                alt="person"
+                className="cover"
+              />
+            ) : (
+              <img src={NoImage} alt="person" className="cover" />
+            )}
+            {currentUser.profileImage ? (
+              <img
+                src={currentUser.profileImage}
+                alt="person"
+                className="profilePic"
+              />
+            ) : (
+              <AccountBoxOutlinedIcon className="pointer profilePic" />
+            )}
           </div>
           <div className="profileContainer">
             <div className="uInfo">
@@ -92,10 +122,16 @@ const Profile = () => {
                     <span>https://www.lama.dev</span>
                   </div>
                 </div>
-                {userId === currentUser.id ? (
-                  <button>update</button>
+                {rshipLoading ? (
+                  <span className="text-loading">Loading ...</span>
+                ) : userId === currentUser.id ? (
+                  <button onClick={() => setOpenUpdate(true)}>update</button>
                 ) : (
-                  <button onClick={handleFollow}>follow</button>
+                  <button onClick={handleFollow}>
+                    {relationshipData.includes(currentUser.id)
+                      ? "UnFollow"
+                      : "Follow"}
+                  </button>
                 )}
               </div>
               <div className="right">
@@ -107,7 +143,9 @@ const Profile = () => {
           </div>
         </>
       )}
-      {openUpdate && <Update setOpenUpdate={setOpenUpdate} />}
+      {openUpdate && (
+        <Update setOpenUpdate={setOpenUpdate} user={currentUser} />
+      )}
     </div>
   );
 };

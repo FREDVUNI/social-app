@@ -28,6 +28,7 @@ export const updateProfile = async (req, res) => {
       name: Joi.string().min(4).required(),
       username: Joi.string().min(4).required(),
       city: Joi.string().required(),
+      website: Joi.string().required(),
       coverImage: Joi.object({
         data: Joi.binary().encoding("base64"),
         contentType: Joi.string(),
@@ -50,12 +51,13 @@ export const updateProfile = async (req, res) => {
       if (err) return res.status(403).json("You're not authorized.");
 
       const q =
-        "UPDATE users SET `name` = ?,`username` = ?,`city` = ?,`coverImage` = ?,`profileImage` = ? WHERE `id` = ?";
+        "UPDATE users SET `name` = ?,`username` = ?,`city` = ?,`website` = ?,`coverImage` = ?,`profileImage` = ? WHERE `id` = ?";
 
       const values = [
         req.body.name,
         req.body.username,
         req.body.city,
+        req.body.website,
         req.body.coverImage,
         req.body.profileImage,
         userInfo.id,

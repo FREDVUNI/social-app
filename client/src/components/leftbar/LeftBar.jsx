@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./leftbar.scss";
 import Person from "../../images/person.png";
 import Friends from "../../assets/1.png";
@@ -14,15 +14,23 @@ import Messages from "../../assets/10.png";
 import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import { AuthContext } from "../../context/Auth";
 
 const LeftBar = () => {
+  const { currentUser } = useContext(AuthContext);
   return (
     <div className="leftbar">
       <div className="container">
         <div className="menu">
           <div className="user">
-            <img src={Person} alt="person" />
-            <span>John Doe</span>
+            {currentUser.profileImage ? (
+              <img src={currentUser.profileImage} alt="person" />
+            ) : (
+              <AccountBoxOutlinedIcon className="pointer" />
+            )}
+            {/* <img src={Person} alt="person" /> */}
+            <span>{currentUser.name}</span>
           </div>
           <div className="item">
             <img src={Friends} alt="friends" />

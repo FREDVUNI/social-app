@@ -83,7 +83,6 @@ const Share = () => {
               name="file"
               style={{ display: "none" }}
               onChange={(e) => setFile(e.target.files[0])}
-              fde
             />
             <label htmlFor="file">
               <div className="item">

@@ -14,6 +14,7 @@ const Update = ({ setOpenUpdate, user }) => {
     city: user.city,
     website: user.website,
   });
+  //   console.log(user);
 
   const upload = async (file) => {
     console.log(file);
@@ -74,7 +75,7 @@ const Update = ({ setOpenUpdate, user }) => {
                     src={
                       cover
                         ? URL.createObjectURL(cover)
-                        : "/uploads/posts/" + user.coverImage
+                        : "/uploads/profile/" + user.coverImage
                     }
                     alt=""
                   />
@@ -94,7 +95,7 @@ const Update = ({ setOpenUpdate, user }) => {
                     src={
                       profile
                         ? URL.createObjectURL(profile)
-                        : "/uploads/posts/" + user.profileImage
+                        : "/uploads/profile/" + user.profileImage
                     }
                     alt=""
                   />
@@ -110,14 +111,14 @@ const Update = ({ setOpenUpdate, user }) => {
             </div>
             <label>Email</label>
             <input
-              type="text"
+              type="email"
               value={texts.email}
               name="email"
               onChange={handleChange}
             />
             <label>Password</label>
             <input
-              type="text"
+              type="password"
               value={texts.password}
               name="password"
               onChange={handleChange}

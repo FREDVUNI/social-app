@@ -4,9 +4,9 @@ import moment from "moment";
 
 export const getRelationships = async (req, res) => {
   try {
-    const q = `SELECT follower_userId FROM relationships WHERE follower_userId = ?`;
+    const q = `SELECT follower_userId FROM relationships WHERE followed_userId = ?`;
 
-    db.query(q, [req.query.follower_userId], (err, data) => {
+    db.query(q, [req.query.followed_userId], (err, data) => {
       if (err) return res.status(500).json(err);
       return res
         .status(200)
@@ -21,39 +21,39 @@ export const addRelationship = async (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized.");
 
-    const q = "SELECT * FROM relationships WHERE followed_userId = ? ";
+    // const q = "SELECT * FROM relationships WHERE followed_userId = ? ";
 
-    db.query(q, [req.body.userId], (err, data) => {
-      if (err) return res.status(500).json(err);
+    // db.query(q, [req.body.userId], (err, data) => {
+    //   if (err) return res.status(500).json(err);
 
-      if (data.length)
+    // if (data.length)
+    //   return res
+    //     .status(409)
+    //     .json("You're already following user " + req.body.userId);
+
+    jwt.verify(token, process.env.JWT_SECRET, async (err, userInfo) => {
+      if (err) return res.status(403).json("You're not authorized.");
+
+      const values = [
+        userInfo.id,
+        req.body.userId,
+        moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+      ];
+
+      if (userInfo.id === req.body.userId)
+        return res.status(400).json("You can't follow yourself");
+
+      const q =
+        "INSERT INTO relationships(`follower_userId`,`followed_userId`,`createdAt`) VALUES (?)";
+
+      db.query(q, [values], (err, data) => {
+        if (err) return res.status(500).json(err);
         return res
-          .status(409)
-          .json("You're already following user " + req.body.userId);
-
-      jwt.verify(token, process.env.JWT_SECRET, async (err, userInfo) => {
-        if (err) return res.status(403).json("You're not authorized.");
-
-        const values = [
-          userInfo.id,
-          req.body.userId,
-          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-        ];
-
-        if (userInfo.id === req.body.userId)
-          return res.status(400).json("You can't follow yourself");
-
-        const q =
-          "INSERT INTO relationships(`follower_userId`,`followed_userId`,`createdAt`) VALUES (?)";
-
-        db.query(q, [values], (err, data) => {
-          if (err) return res.status(500).json(err);
-          return res
-            .status(200)
-            .json("You're now Following user " + req.body.userId);
-        });
+          .status(200)
+          .json("You're now Following user " + req.body.userId);
       });
     });
+    // });
   } catch (error) {
     res.status(500).json(error.message);
   }
