@@ -3,7 +3,7 @@ import { db } from "../database/connection.js";
 import jwt from "jsonwebtoken";
 import moment from "moment/moment.js";
 import multer from "multer";
-import { storage, fileFilter } from "../index.js";
+import { postStorage, fileFilter } from "../index.js";
 
 export const getPosts = async (req, res) => {
   try {
@@ -81,7 +81,7 @@ export const updatePost = async (req, res) => {
       if (err) return res.status(403).json("You're not authorized.");
 
       const upload = multer({
-        storage: storage,
+        storage: postStorage,
         fileFilter: fileFilter,
       }).single("image");
 

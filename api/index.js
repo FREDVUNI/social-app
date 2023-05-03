@@ -30,7 +30,7 @@ app.use(
   })
 );
 
-export const storage = multer.diskStorage({
+export const postStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "../client/public/uploads/posts");
   },
@@ -56,15 +56,15 @@ export const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage, fileFilter });
-const uploadProfile = multer({ ProfileStorage, fileFilter });
+const postUpload = multer({ storage: postStorage, fileFilter });
+const profileUpload = multer({ storage: ProfileStorage, fileFilter });
 
-app.post("/api/upload", upload.single("file"), (req, res) => {
+app.post("/api/upload", postUpload.single("file"), (req, res) => {
   const file = req.file;
   res.status(200).json(file.filename);
 });
 
-app.post("/api/upload/profile", uploadProfile.single("file"), (req, res) => {
+app.post("/api/profile/upload", profileUpload.single("file"), (req, res) => {
   const file = req.file;
   res.status(200).json(file.filename);
 });

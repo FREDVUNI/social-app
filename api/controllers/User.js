@@ -24,25 +24,25 @@ export const getUser = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const schema = Joi.object({
-      name: Joi.string().min(4).required(),
-      username: Joi.string().min(4).required(),
-      city: Joi.string().required(),
-      website: Joi.string().required(),
-      coverImage: Joi.object({
-        data: Joi.binary().encoding("base64"),
-        contentType: Joi.string(),
-        name: Joi.string(),
-      }),
-      profileImage: Joi.object({
-        data: Joi.binary().encoding("base64"),
-        contentType: Joi.string(),
-        name: Joi.string(),
-      }),
-    });
+    // const schema = Joi.object({
+    //   name: Joi.string().min(4).required(),
+    //   username: Joi.string().min(4).required(),
+    //   city: Joi.string().required(),
+    //   website: Joi.string().required(),
+    //   coverImage: Joi.object({
+    //     data: Joi.binary().encoding("base64"),
+    //     contentType: Joi.string(),
+    //     name: Joi.string(),
+    //   }),
+    //   profileImage: Joi.object({
+    //     data: Joi.binary().encoding("base64"),
+    //     contentType: Joi.string(),
+    //     name: Joi.string(),
+    //   }),
+    // });
 
-    const { error } = schema.validate(req.body);
-    if (error) return res.status(400).json(error.details[0].message);
+    // const { error } = schema.validate(req.body);
+    // if (error) return res.status(400).json(error.details[0].message);
 
     const token = req.cookies.accessToken;
     if (!token) return res.status(401).json("You're not authorized.");
@@ -51,23 +51,24 @@ export const updateProfile = async (req, res) => {
       if (err) return res.status(403).json("You're not authorized.");
 
       const q =
-        "UPDATE users SET `name` = ?,`username` = ?,`city` = ?,`website` = ?,`coverImage` = ?,`profileImage` = ? WHERE `id` = ?";
+        "UPDATE users SET `name` = ?,`city` = ?,`website` = ?,`coverImage` = ?,`profileImage` = ? WHERE `id` = ?";
 
-      const values = [
-        req.body.name,
-        req.body.username,
-        req.body.city,
-        req.body.website,
-        req.body.coverImage,
-        req.body.profileImage,
-        userInfo.id,
-      ];
-
-      db.query(q, [values], (err, data) => {
-        if (err) return res.status(500).json(err);
-        if (data.affectedRows > 0)
-          return res.status(200).json("profile has been updated.");
-      });
+      db.query(
+        q,
+        [
+          req.body.name,
+          req.body.city,
+          req.body.website,
+          req.body.coverImage,
+          req.body.profileImage,
+          userInfo.id,
+        ],
+        (err, data) => {
+          if (err) return res.status(500).json(err);
+          if (data.affectedRows > 0)
+            return res.status(200).json("profile has been updated.");
+        }
+      );
     });
   } catch (error) {
     res.status(500).json(error.message);

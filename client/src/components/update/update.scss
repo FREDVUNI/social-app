@@ -12,11 +12,15 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     .wrapper {
       margin: auto;
       width: 40%;
-      height: 70%;
+      height: 700px;
       background-color: themed("bg");
       padding: 50px;
       z-index: 999;
@@ -75,7 +79,7 @@
               right: 0;
               margin: auto;
               font-size: 30px;
-              color: lightgray;
+              color: gray;
               cursor: pointer;
             }
           }

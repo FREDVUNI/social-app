@@ -99,16 +99,18 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
+            text-align: left;
             gap: 10px;
+            flex-direction: column;
 
             .item {
               display: flex;
-              align-items: center;
+              align-items: left;
               gap: 2px;
               color: themed("textColorSoft");
 
               span {
-                font-size: 12px;
+                font-size: 14px;
               }
             }
           }

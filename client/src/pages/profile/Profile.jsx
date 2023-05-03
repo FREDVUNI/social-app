@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import "./profile.scss";
 import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -9,9 +10,8 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
-import Person from "../../images/person.png";
-import Cover from "../../images/login.jpg";
-import { useContext, useState } from "react";
+// import Person from "../../images/person.png";
+// import Cover from "../../images/login.jpg";
 import { AuthContext } from "../../context/Auth";
 import { useLocation } from "react-router-dom";
 import { makeRequest } from "../../axios";
@@ -24,7 +24,7 @@ const Profile = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-  const { isLoading, error, data } = useQuery(
+  const { isLoading, error,data } = useQuery(
     ["user", currentUser.id],
     async () => {
       const response = await makeRequest.get("/users/find/" + userId);
@@ -72,19 +72,19 @@ const Profile = () => {
       ) : (
         <>
           <div className="images">
-            {currentUser.coverImage ? (
+            {data.coverImage ? (
               <img
-                src={currentUser.coverImage}
-                alt="person"
+                src={"/uploads/profile/" + data.coverImage}
+                alt="coverPicture"
                 className="cover"
               />
             ) : (
-              <img src={NoImage} alt="person" className="cover" />
+              <img src={NoImage} alt="coverImage" className="cover" />
             )}
-            {currentUser.profileImage ? (
+            {data.profileImage ? (
               <img
-                src={currentUser.profileImage}
-                alt="person"
+              src={"/uploads/profile/" + data.profileImage}
+                alt="profile"
                 className="profilePic"
               />
             ) : (
@@ -111,21 +111,35 @@ const Profile = () => {
                 </a>
               </div>
               <div className="center">
-                <span>Jane Doe</span>
+                <span>{data.name}</span>
                 <div className="info">
                   <div className="item">
                     <PlaceIcon />
-                    <span>USA</span>
+                    <span>
+                      {data.city
+                        ? data.city
+                        : "no city available"}
+                    </span>
                   </div>
                   <div className="item">
                     <LanguageIcon />
-                    <span>https://www.lama.dev</span>
+                    <span>
+                      {data.website
+                        ? data.website
+                        : "no website available"}
+                    </span>
                   </div>
                 </div>
                 {rshipLoading ? (
                   <span className="text-loading">Loading ...</span>
                 ) : userId === currentUser.id ? (
-                  <button onClick={() => setOpenUpdate(true)}>update</button>
+                  <button
+                    onClick={() => {
+                      setOpenUpdate(true);
+                    }}
+                  >
+                    update
+                  </button>
                 ) : (
                   <button onClick={handleFollow}>
                     {relationshipData.includes(currentUser.id)
@@ -144,7 +158,7 @@ const Profile = () => {
         </>
       )}
       {openUpdate && (
-        <Update setOpenUpdate={setOpenUpdate} user={currentUser} />
+        <Update setOpenUpdate={setOpenUpdate} user={data} />
       )}
     </div>
   );
