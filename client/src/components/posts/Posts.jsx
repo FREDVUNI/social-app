@@ -4,11 +4,8 @@ import "./posts.scss";
 // import PostImg from "../../images/login.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
-import { useContext } from "react";
-import { AuthContext } from "../../context/Auth";
 
-const Posts = () => {
-  const { currentUser } = useContext(AuthContext);
+const Posts = ({userId}) => {
   // const posts = [
   //   {
   //     id: 1,
@@ -27,7 +24,6 @@ const Posts = () => {
   //     img: PostImg,
   //   },
   // ];
-  let userId = currentUser.id;
   const { isLoading, error, data } = useQuery(["posts"], async () => {
     const response = await makeRequest.get("/posts?userId=" + userId);
     return response.data;

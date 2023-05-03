@@ -39,6 +39,15 @@ export const storage = multer.diskStorage({
   },
 });
 
+const ProfileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "../client/public/uploads/profile");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
 export const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
@@ -48,8 +57,14 @@ export const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage, fileFilter });
+const uploadProfile = multer({ ProfileStorage, fileFilter });
 
 app.post("/api/upload", upload.single("file"), (req, res) => {
+  const file = req.file;
+  res.status(200).json(file.filename);
+});
+
+app.post("/api/upload/profile", uploadProfile.single("file"), (req, res) => {
   const file = req.file;
   res.status(200).json(file.filename);
 });

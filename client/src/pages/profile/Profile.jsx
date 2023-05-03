@@ -11,13 +11,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
 import Person from "../../images/person.png";
 import Cover from "../../images/login.jpg";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/Auth";
 import { useLocation } from "react-router-dom";
 import { makeRequest } from "../../axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Update from "../../components/update/Update";
 
 const Profile = () => {
+  const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
   const { isLoading, error, data } = useQuery(
@@ -27,7 +29,26 @@ const Profile = () => {
       return response.data;
     }
   );
-  console.log(data);
+  // console.log(data);
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (liked) => {
+      if (liked) return makeRequest.delete("/relationships?userId=" + userId);
+      return makeRequest.post("/relationships", { userId });
+    },
+    {
+      onSuccess: () => {
+        // invalidate and refetch
+        queryClient.invalidateQueries(["user"]);
+      },
+    }
+  );
+  const handleFollow = (e) => {
+    e.preventDefault();
+    mutation.mutate(data.includes(currentUser.id));
+  };
   return (
     <div className="profile">
       {error ? (
@@ -74,7 +95,7 @@ const Profile = () => {
                 {userId === currentUser.id ? (
                   <button>update</button>
                 ) : (
-                  <button>follow</button>
+                  <button onClick={handleFollow}>follow</button>
                 )}
               </div>
               <div className="right">
@@ -82,10 +103,11 @@ const Profile = () => {
                 <MoreVertIcon />
               </div>
             </div>
-            <Posts />
+            <Posts userId={userId} />
           </div>
         </>
       )}
+      {openUpdate && <Update setOpenUpdate={setOpenUpdate} />}
     </div>
   );
 };
