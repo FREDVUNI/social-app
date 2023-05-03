@@ -47,7 +47,7 @@ const Post = ({ post }) => {
         <div className="user">
           <div className="userInfo">
             {post.profileImage ? (
-              <img src={post.profileImage} alt="person" />
+              <img src={"/uploads/profile/" + post.profileImage} alt="person" />
             ) : (
               <AccountBoxOutlinedIcon className="pointer" />
             )}
