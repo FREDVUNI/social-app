@@ -24,7 +24,7 @@ const Profile = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-  const { isLoading, error,data } = useQuery(
+  const { isLoading, error, data } = useQuery(
     ["user", currentUser.id],
     async () => {
       const response = await makeRequest.get("/users/find/" + userId);
@@ -72,7 +72,7 @@ const Profile = () => {
       ) : (
         <>
           <div className="images">
-            {data.coverImage ? (
+            {currentUser.id === data.id && data.coverImage ? (
               <img
                 src={"/uploads/profile/" + data.coverImage}
                 alt="coverPicture"
@@ -81,9 +81,9 @@ const Profile = () => {
             ) : (
               <img src={NoImage} alt="coverImage" className="cover" />
             )}
-            {data.profileImage ? (
+            {currentUser.id === data.id && data.profileImage ? (
               <img
-              src={"/uploads/profile/" + data.profileImage}
+                src={"/uploads/profile/" + data.profileImage}
                 alt="profile"
                 className="profilePic"
               />
@@ -115,18 +115,12 @@ const Profile = () => {
                 <div className="info">
                   <div className="item">
                     <PlaceIcon />
-                    <span>
-                      {data.city
-                        ? data.city
-                        : "no city available"}
-                    </span>
+                    <span>{data.city ? data.city : "no city available"}</span>
                   </div>
                   <div className="item">
                     <LanguageIcon />
                     <span>
-                      {data.website
-                        ? data.website
-                        : "no website available"}
+                      {data.website ? data.website : "no website available"}
                     </span>
                   </div>
                 </div>
@@ -157,9 +151,7 @@ const Profile = () => {
           </div>
         </>
       )}
-      {openUpdate && (
-        <Update setOpenUpdate={setOpenUpdate} user={data} />
-      )}
+      {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data} />}
     </div>
   );
 };
