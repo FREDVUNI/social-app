@@ -2,11 +2,10 @@ import { useContext } from "react";
 import "./stories.scss";
 import { AuthContext } from "../../context/Auth";
 import Story from "../../images/login.jpg";
-import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import UserAvatar from "../UserAvatar";
 
 const Stories = () => {
   const { currentUser } = useContext(AuthContext);
-
   //TEMPORARY
   const stories = [
     {
@@ -34,12 +33,7 @@ const Stories = () => {
   return (
     <div className="stories">
       <div className="story">
-        {currentUser.profileImage ? (
-          <img src={currentUser.profileImage} alt="person" />
-        ) : (
-          <AccountBoxOutlinedIcon className="pointer"/>
-        )}
-        <span>{currentUser.name}</span>
+        <UserAvatar userId={currentUser.id} />
         <button>+</button>
       </div>
       {stories.map((story) => (

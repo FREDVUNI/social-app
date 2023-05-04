@@ -31,7 +31,7 @@ const Profile = () => {
       return response.data;
     }
   );
-  console.log(data);
+  // console.log(data);
 
   const { isLoading: rshipLoading, data: relationshipData } = useQuery(
     ["relationship"],

@@ -14,8 +14,8 @@ import Messages from "../../assets/10.png";
 import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
-import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { AuthContext } from "../../context/Auth";
+import UserAvatar from "../UserAvatar";
 
 const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
@@ -24,13 +24,7 @@ const LeftBar = () => {
       <div className="container">
         <div className="menu">
           <div className="user">
-            {currentUser.profileImage ? (
-              <img src={currentUser.profileImage} alt="person" />
-            ) : (
-              <AccountBoxOutlinedIcon className="pointer" />
-            )}
-            {/* <img src={Person} alt="person" /> */}
-            <span>{currentUser.name}</span>
+            <UserAvatar userId={currentUser.id} />
           </div>
           <div className="item">
             <img src={Friends} alt="friends" />

@@ -1,7 +1,10 @@
-import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { createContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { makeRequest } from "../axios";
 
 export const AuthContext = createContext();
+
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) !== null
@@ -28,6 +31,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
+
   return (
     <AuthContext.Provider
       value={{ currentUser, setCurrentUser, login, register }}
@@ -35,4 +39,17 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useLoggedInUser = (userId) => {
+  const { data, isLoading, error } = useQuery(["user", userId], async () => {
+    if (!userId) {
+      return null;
+    }
+
+    const response = await makeRequest.get("/users/find/" + userId);
+    return response.data;
+  });
+
+  return { data, isLoading, error };
 };
