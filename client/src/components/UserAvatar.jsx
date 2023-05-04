@@ -11,7 +11,7 @@ const UserAvatar = ({ userId }) => {
 
   if (error) {
     return (
-      <span className="text-error">There was an error loading posts.</span>
+      <span className="text-error">There was an error loading data.</span>
     );
   }
 
