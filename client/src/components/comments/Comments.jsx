@@ -78,7 +78,10 @@ const Comments = ({ postId }) => {
         data.map((comment) => (
           <div className="comment">
             {comment.profileImage ? (
-              <img src={comment.profileImage} alt="person" />
+              <img
+                src={"/uploads/profile/" + comment.profileImage}
+                alt="person"
+              />
             ) : (
               <AccountBoxOutlinedIcon className="pointer" />
             )}
