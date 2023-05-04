@@ -31,7 +31,7 @@ const Comments = ({ postId }) => {
     return response.data;
   });
 
-  // console.log(data);
+  console.log(data);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(
@@ -56,7 +56,10 @@ const Comments = ({ postId }) => {
     <div className="comments">
       <div className="write">
         {currentUser.profileImage ? (
-          <img src={currentUser.profileImage} alt="person" />
+          <img
+            src={"/uploads/profile/" + currentUser.profileImage}
+            alt="person"
+          />
         ) : (
           <AccountBoxOutlinedIcon className="pointer" />
         )}
