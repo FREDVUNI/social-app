@@ -11,7 +11,7 @@ export const getUser = async (req, res) => {
       if (err) return res.status(403).json("You're not authorized.");
 
       const q = "SELECT * FROM users WHERE `id` = ?";
-      db.query(q, [userInfo.id], (err, data) => {
+      db.query(q, [req.params.userId], (err, data) => {
         if (err) return res.status(500).json(err);
         const { password, ...user_info } = data[0];
         return res.status(200).json(user_info);

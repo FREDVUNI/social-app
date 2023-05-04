@@ -31,7 +31,7 @@ const Profile = () => {
       return response.data;
     }
   );
-  // console.log(data);
+  console.log(data);
 
   const { isLoading: rshipLoading, data: relationshipData } = useQuery(
     ["relationship"],
@@ -111,7 +111,7 @@ const Profile = () => {
                 </a>
               </div>
               <div className="center">
-                <span>{data.name}</span>
+                <span className="name">{data.name}</span>
                 <div className="info">
                   <div className="item">
                     <PlaceIcon />
