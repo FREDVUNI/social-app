@@ -32,6 +32,9 @@ To get started with this app, follow these steps:
 5. Start the server by running `yarn start`
 6. Access the app in your web browser at `http://localhost:8800`
 
+## Screenshot
+![image](https://user-images.githubusercontent.com/41730664/236139739-be115598-ee4b-4182-875f-13bc8538e939.png)
+
 ## Contributing
 
 Contributions to this project are welcome. If you find a bug or have a feature request, please open an issue on GitHub. If you'd like to contribute code, please fork the repository and submit a pull request.
